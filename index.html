@@ -1,0 +1,1404 @@
+❤️Made By Daniel Tao🤪
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" 
+	  content="width=device-width, 
+			   initial-scale=1.0, 
+			   maximum-scale=1.0, 
+			   user-scalable=no,
+			   shrink-to-fit=no">
+	<title>RPG World</title>
+	<style>
+	
+	.drop-notice {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 15px 30px;
+  border-radius: 10px;
+  font-size: 24px;
+  animation: dropFloat 1.5s ease-out forwards;
+  pointer-events: none;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+@keyframes dropFloat {
+  0% { opacity: 1; transform: translate(-50%, -40%); }
+  100% { opacity: 0; transform: translate(-50%, -100%); }
+}
+	
+	/* 新增伤害数字动画 */
+.damage-number {
+  position: absolute;
+  color: #ff4444;
+  font-weight: bold;
+  font-size: 24px;
+  animation: floatUp 1s ease-out forwards;
+  pointer-events: none;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-50px); opacity: 0; }
+}
+
+/* 新增血条抖动动画 */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(5px); }
+  50% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+  100% { transform: translateX(0); }
+}
+
+.shake {
+  animation: shake 0.3s ease-in-out;
+}
+	
+/* 新增防止缩放样式 */
+html {
+  touch-action: manipulation;
+  overflow-anchor: none;
+}
+		body { 
+			font-family: Arial; 
+			margin: 0;
+			padding: 10px;
+			background: #f0f0f0;
+		}
+		.login-box {
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			background: white;
+			padding: 20px;
+			border-radius: 10px;
+			box-shadow: 0 0 10px rgba(0,0,0,0.2);
+			z-index: 999;
+		}
+		.hidden { display: none; }
+		.status-box {
+			background: white;
+			padding: 15px;
+			border-radius: 10px;
+			box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+			margin-bottom: 10px;
+		}
+		.button-group {
+			display: flex;
+			gap: 10px;
+			margin: 10px 0;
+		}
+		button {
+			flex: 1;
+			padding: 12px;
+			border: none;
+			border-radius: 8px;
+			color: white;
+			font-size: 16px;
+		}
+		.backpack {
+			background: white;
+			border-radius: 10px;
+			padding: 15px;
+			box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+		}
+		.equipment-item {
+			padding: 10px;
+			margin: 5px 0;
+			border-radius: 5px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+/* 修改后的动态颜色样式 */
+.white { 
+	background: #ffffff; 
+	border: 1px solid #e0e0e0;
+}
+/* 绿色：增加颜色对比度 */
+.green {
+	background: linear-gradient(90deg, 
+		#f1f8e9,  /* 更淡的绿色 */
+		#c8e6c9 70%, 
+		#81c784); /* 更深的绿色 */
+	background-size: 300% 100%;
+	animation: gradientAnimation 6s linear infinite;
+}
+
+/* 蓝色：增加渐变跨度 */
+.blue {
+	background: linear-gradient(90deg, 
+		#e1f5fe,  /* 冰蓝色 */
+		#81d4fa 50%, 
+		#039be5); /* 深蓝色 */
+	background-size: 300% 100%;
+	animation: gradientAnimation 5s ease-in-out infinite;
+}
+
+/* 紫色：添加中间过渡色 */
+.purple {
+	background: linear-gradient(90deg, 
+		#f3e5f5, 
+		#ce93d8 40%, 
+		#8e24aa); /* 深紫色 */
+	background-size: 300% 100%;
+	animation: gradientAnimation 5s ease infinite;
+}
+
+/* 黄色：增加饱和度变化 */
+.yellow {
+	background: linear-gradient(90deg, 
+		#fffde7, 
+		#fff176 60%, 
+		#fdd835); /* 亮黄色 */
+	background-size: 300% 100%;
+	animation: gradientAnimation 5s linear infinite;
+}
+
+/* 橙色：增强明暗对比 */
+.orange {
+	background: linear-gradient(90deg, 
+		#fff3e0, 
+		#ffb74d 50%, 
+		#f57c00); /* 深橙色 */
+	background-size: 300% 100%;
+	animation: gradientAnimation 3s ease-in-out infinite;
+}
+
+/* 红色：增加深红色终点 */
+.red {
+	background: linear-gradient(90deg, 
+		#ffebee, 
+		#ef9a9a 50%, 
+		#d32f2f); /* 深红色 */
+	background-size: 300% 100%;
+	animation: gradientAnimation 3s linear infinite;
+}
+
+/* 粉色：添加渐变层次 */
+.pink {
+	background: linear-gradient(90deg, 
+		#fce4ec, 
+		#f48fb1 50%, 
+		#d81b60); /* 品红色 */
+	background-size: 300% 100%;
+	animation: gradientAnimation 3s ease infinite;
+}
+.rainbow {
+	background: linear-gradient(45deg, 
+		#ff0000, #ff9900, #ffff00, #33ff00,
+		#0099ff, #6633ff);
+	background-size: 400% 400%;
+	animation: rainbow 2.5s ease infinite;
+}
+
+@keyframes gradientAnimation {
+	0% { background-position: 0% 50%; }
+	50% { background-position: 100% 50%; }
+	100% { background-position: 0% 50%; }
+}
+
+@keyframes rainbow {
+	0% { background-position: 0% 50% }
+	50% { background-position: 100% 50% }
+	100% { background-position: 0% 50% }
+}
+
+.equipped { border: 2px solid #4CAF50; }
+
+		
+		#bossBar {
+			height: 20px;
+			background: #eee;
+			border-radius: 10px;
+			overflow: hidden;
+			margin: 10px 0;
+		}
+		#bossHealth {
+			height: 100%;
+			background: #ff4444;
+			transition: width 0.3s;
+		}
+		.boss-info {
+			text-align: center;
+			margin: 10px 0;
+			font-size: 24px;
+		}
+		.auto-fighting { background: #FF5722; }
+		.equipment-tabs {
+			display: flex;
+			gap: 10px;
+			margin-bottom: 10px;
+		}
+		.tab-button {
+			padding: 8px 15px;
+			border-radius: 5px;
+			background: #ddd;
+			border: none;
+		}
+		.active-tab {
+			background: #4CAF50;
+			color: white;
+		}
+		
+		/* 新增概率表样式 */
+.probability-table {
+	background: #fff;
+	border-radius: 8px;
+	padding: 10px;
+	margin-top: 10px;
+	box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+}
+.prob-row {
+	display: flex;
+	justify-content: space-between;
+	padding: 6px 0;
+	border-bottom: 1px solid #eee;
+}
+.prob-row.rare {
+	color: #FF4081;
+	font-weight: bold;
+}
+.prob-row span:first-child {
+	color: #666;
+}
+.prob-row span:last-child {
+	color: #2196F3;
+}
+
+.quest-panel {
+			background: white;
+			padding: 15px;
+			border-radius: 10px;
+			box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+			margin-top: 10px;
+		}
+		.quest-item {
+			padding: 10px;
+			margin: 8px 0;
+			background: #f8f9fa;
+			border-radius: 8px;
+		}
+		.progress-container {
+			height: 12px;
+			background: #e9ecef;
+			border-radius: 6px;
+			overflow: hidden;
+			margin: 5px 0;
+		}
+		.progress-bar {
+			height: 100%;
+			background: #4CAF50;
+			transition: width 0.3s ease;
+		}
+		.quest-header {
+			display: flex;
+			justify-content: space-between;
+			margin-bottom: 5px;
+		}
+		.quest-level {
+			color: #2196F3;
+			font-weight: bold;
+		}
+		.quest-reward {
+			font-size: 0.9em;
+			color: #28a745;
+		}
+		
+		
+		.equip-confirm {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: white;
+	padding: 20px;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0,0,0,0.2);
+	z-index: 1000;
+	text-align: center;
+}
+.confirm-buttons {
+	margin-top: 15px;
+	display: flex;
+	gap: 10px;
+}
+
+.prob-row.ultra-rare {
+  color: #FFD700;
+  font-weight: bold;
+  text-shadow: 0 0 5px rgba(255,215,0,0.5);
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+#autoCombineBtn {
+  transition: all 0.3s ease;
+}
+
+#autoCombineBtn:active {
+  transform: scale(0.95);
+}
+
+.auto-combining {
+  animation: pulse 1.5s ease infinite;
+  box-shadow: 0 0 15px rgba(96,125,139,0.5);
+}
+	</style>
+</head>
+<body>
+	<div id="loginBox" class="login-box">
+		<h2>注册/登录</h2>
+		<input type="text" id="username" placeholder="账号">
+		<input type="password" id="password" placeholder="密码">
+		<input type="text" id="playerName" placeholder="角色名">
+		<div class="button-group">
+			<button onclick="register()" style="background:#4CAF50">注册</button>
+			<button onclick="login()" style="background:#2196F3">登录</button>
+		</div>
+	</div>
+
+	<!-- 游戏主界面 -->
+	<div id="gameUI" class="hidden">
+		<!-- 状态显示 -->
+		<div class="status-box">
+			<div>👤<span id="showName">无名</span></div>
+			<div>❤️血量: <span id="hp">100</span>/<span id="maxHp">100</span></div>
+			<div>💎钻石: <span id="diamond">0</span></div>
+			
+<div>👑等级: <span id="level">1</span> (下级奖励: <span id="nextReward">100</span>💎)</div>
+			<div>📈经验: <span id="exp">0<span id="needExp">100</span></div>
+			<div>🔰关卡: <span id="stage">1-1</span></div>
+			<div>🗡️武器: <span id="currentWeapon">无</span></div>
+			<div>🛡️防御: <span id="currentDefense">无</span></div>
+		</div>
+		
+		<!-- BOSS战界面 -->
+	<div class="status-box">
+		<h3>🤺BOSS战</h3>
+		<div class="boss-info" style="position: relative;">
+			<div id="bossEmoji">🤪</div>
+			<div>Lv.<span id="bossLevel">1</span> BOSS</div>
+			<div id="bossHp">100/100</div>
+			<div>🗡️攻击力: <span id="bossAttack">5</span></div>  <!-- 新增攻击力显示 -->
+			<div>🏆击败奖励: <span id="bossReward">经验50 + 砖石10 </span></div>
+		</div>
+		<div id="bossBar">
+			<div id="bossHealth" style="width: 100%"></div>
+		</div>
+		<div class="button-group">
+			<button onclick="attackBoss()" style="background:#F44336">🗡️攻击BOSS</button>
+			<button id="autoBtn" onclick="toggleAutoFight()" style="background:#9C27B0">⚡自动战斗</button>
+		</div>
+	</div>
+	
+	<div class="quest-panel">
+			<h3>🏆 成就任务</h3>
+			<div id="questList"></div>
+		</div>
+		
+		<!-- 商城界面 -->
+	<div class="status-box">
+		<div class="equipment-tabs">
+			<button class="tab-button active-tab" onclick="showShopTab('weapon')">🗡️武器商城</button>
+			<button class="tab-button" onclick="showShopTab('defense')">🛡️防御商城</button>
+		</div>
+		
+		<!-- 在武器商城部分新增概率表 -->
+<div id="weaponShop" class="shop-tab">
+	<div class="button-group">
+	<button onclick="drawWeapon(1)" style="background:#FF9800">单连 (200💎)</button>
+		<button onclick="drawWeapon(10)" style="background:#FF5722">十连 (2000💎)</button>
+		<button onclick="drawWeapon(100)" style="background:#E91E63">百连 (20000💎)</button>
+	<button onclick="drawWeapon(1000)" style="background:#673AB7">千连 (200000💎)</button>
+</div>
+	
+	
+	<!-- 新增概率表 -->
+	<div class="probability-table">
+	<div class="prob-row"><span>🗡️Lv.1</span><span>50%</span></div>
+	<div class="prob-row"><span>⚔️Lv.2</span><span>30%</span></div>
+	<div class="prob-row"><span>🏏Lv.3</span><span>12%</span></div>
+	<div class="prob-row"><span>🌂Lv.4</span><span>5%</span></div>
+	<div class="prob-row"><span>🍡Lv.5</span><span>1.9%</span></div>
+	<div class="prob-row"><span>🎯Lv.6</span><span>0.5%</span></div>
+	<div class="prob-row"><span>🔫Lv.7</span><span>0.3%</span></div>
+	<div class="prob-row"><span>💣Lv.8</span><span>0.2%</span></div>
+	<div class="prob-row"><span>🏹Lv.9</span><span>0.08%</span></div>
+	<div class="prob-row rare"><span>🍭Lv.10</span><span>0.01%</span></div>
+	<div class="prob-row rare"><span>👑Lv.11-15</span><span>0.005%每级</span></div>
+	<div class="prob-row rare"><span>👑Lv.16-20</span><span>0.003%每级</span></div>
+	<div class="prob-row rare"><span>👑Lv.21-25</span><span>0.0012%每级</span></div>
+	<div class="prob-row rare"><span>👑Lv.26-30</span><span>0.0005%每级</span></div>
+	<div class="prob-row rare"><span>👑Lv.31-35</span><span>0.00015%每级</span></div>
+	<div class="prob-row rare"><span>👑Lv.36-40</span><span>0.00009%每级</span></div>
+	<div class="prob-row rare"><span>👑Lv.41-45</span><span>0.00005%每级</span></div>
+	<div class="prob-row ultra-rare"><span>👑Lv.46-50</span><span>0.00001%每级</span></div>
+  </div>
+  </div>
+  
+<!-- 在防御商城部分新增概率表 -->
+<div id="defenseShop" class="shop-tab" style="display:none">
+	<div class="button-group">
+		<button onclick="drawDefense(1)" style="background:#FF9800">单抽 (150💎)</button>
+		<button onclick="drawDefense(10)" style="background:#FF5722">十连 (1500💎)</button>
+	<button onclick="drawDefense(100)" style="background:#E91E63">百连 (15000💎)</button>
+<button onclick="drawDefense(1000)" style="background:#673AB7">千连 (150000💎)</button>
+</div>
+
+
+	<div class="probability-table">
+	<div class="prob-row"><span>🛡️Lv.1</span><span>50%</span></div>
+	<div class="prob-row"><span>🔰Lv.2</span><span>30%</span></div>
+	<div class="prob-row"><span>🪘Lv.3</span><span>12%</span></div>
+	<div class="prob-row"><span>⛱️Lv.4</span><span>5%</span></div>
+	<div class="prob-row"><span>⚜️Lv.5</span><span>1.9%</span></div>
+	<div class="prob-row"><span>🛡️Lv.6</span><span>0.5%</span></div>
+	<div class="prob-row"><span>🔰Lv.7</span><span>0.3%</span></div>
+	<div class="prob-row"><span>🪘Lv.8</span><span>0.2%</span></div>
+	<div class="prob-row"><span>⛱️Lv.9</span><span>0.08%</span></div>
+	<div class="prob-row rare"><span>🔱Lv.10</span><span>0.01%</span></div>
+	<div class="prob-row rare"><span>👑Lv.11-15</span><span>0.005%每级</span></div>
+	<div class="prob-row rare"><span>👑Lv.16-20</span><span>0.003%每级</span></div>
+	<div class="prob-row rare"><span>👑Lv.21-25</span><span>0.0012%每级</span></div>
+	<div class="prob-row rare"><span>👑Lv.26-30</span><span>0.0005%每级</span></div>
+	<div class="prob-row rare"><span>👑Lv.31-35</span><span>0.00015%每级</span></div>
+	<div class="prob-row rare"><span>👑Lv.36-40</span><span>0.00009%每级</span></div>
+	<div class="prob-row rare"><span>👑Lv.41-45</span><span>0.00005%每级</span></div>
+	<div class="prob-row ultra-rare"><span>👑Lv.46-50</span><span>0.00001%每级</span></div>
+</div>
+</div>
+		
+	 <!-- 背包界面 -->
+	<div class="backpack">
+			<div class="equipment-tabs">
+				<button class="tab-button active-tab" onclick="showBackpackTab('weapon')">武器背包</button>
+				<button class="tab-button" onclick="showBackpackTab('defense')">防御背包</button>
+			</div>
+			   <button onclick="combineEquipment()" style="background:#009688">⚙️一键合成</button>
+		<button id="autoCombineBtn" onclick="toggleAutoCombine()" style="background:#607D8B">🤖自动合成</button>
+			<div id="equipmentList" style="margin-top: 10px;"></div>
+		</div>
+	</div>
+	
+
+  <!-- 提示容器 -->
+  <div id="messageBox" style="position: fixed; top: 20px; right: 20px; 
+		 background: gold; padding: 10px; display: none;"></div>
+
+<div id="confirmBox" class="equip-confirm hidden">
+	<h4>🛡️ 更换防御装备</h4>
+	<p id="confirmText"></p>
+	<div class="confirm-buttons">
+		<button onclick="confirmEquip(true)" style="background:#4CAF50">✅ 确认</button>
+		<button onclick="confirmEquip(false)" style="background:#F44336">❌ 取消</button>
+	</div>
+</div>
+
+<div id="confirmBox" class="equip-confirm hidden">
+	<h4>⚔️ 更换武器</h4>
+	<p id="confirmText"></p>
+	<div class="confirm-buttons">
+		<button onclick="confirmEquip(true)" style="background:#4CAF50">✅ 确认</button>
+		<button onclick="confirmEquip(false)" style="background:#F44336">❌ 取消</button>
+	</div>
+</div>
+
+<script>
+
+let autoCombineInterval = null;
+let isCombining = false;
+
+function showShopTab(type) {
+	document.querySelectorAll('.shop-tab').forEach(tab => tab.style.display = 'none');
+	document.getElementById(type + 'Shop').style.display = 'block';
+	document.querySelectorAll('.shop .tab-button').forEach(btn => 
+		btn.classList.remove('active-tab'));
+	event.target.classList.add('active-tab');
+}
+
+function showBackpackTab(type) {
+	document.querySelectorAll('.backpack .tab-button').forEach(btn => 
+		btn.classList.remove('active-tab'));
+	event.target.classList.add('active-tab');
+	updateDisplay();
+}
+
+// 数值格式化函数（新增）
+function formatNumber(n) {
+	const units = [
+	{ threshold: 1e36, divisor: 1e36, unit: 'U' },
+	{ threshold: 1e33, divisor: 1e33, unit: 'd' },
+	{ threshold: 1e30, divisor: 1e30, unit: 'N' },
+	{ threshold: 1e27, divisor: 1e27, unit: 'O' },
+		{ threshold: 1e24, divisor: 1e24, unit: 'S' },
+		{ threshold: 1e21, divisor: 1e21, unit: 's' },
+		{ threshold: 1e18, divisor: 1e18, unit: 'Q' },
+		{ threshold: 1e15, divisor: 1e15, unit: 'q' },
+		{ threshold: 1e12, divisor: 1e12, unit: 'T' },
+		{ threshold: 1e9, divisor: 1e9, unit: 'b' },
+		{ threshold: 1e6, divisor: 1e6, unit: 'm' },
+		{ threshold: 1e3, divisor: 1e3, unit: 'k' }
+	];
+
+	for (const unit of units) {
+		if (n >= unit.threshold) {
+			const value = n / unit.divisor;
+			return value.toFixed(2)
+					   .replace(/\.?0+$/, '') // 去除末尾的零
+					   .replace(/\.$/, '')	// 去除多余的小数点
+				+ unit.unit;
+		}
+	}
+	return n.toString();
+}
+// 修改后的合成功能
+function combineEquipment() {
+	const activeTab = document.querySelector('.backpack .active-tab').textContent;
+	if(activeTab.includes("武器")) {
+		combineWeapons();
+	} else {
+		combineDefenses();
+	}
+}
+
+let currentPage = 0;
+const PAGE_SIZE = 50;
+
+function showNextPage() {
+  const start = currentPage * PAGE_SIZE;
+  const end = start + PAGE_SIZE;
+  const pageItems = gameData.weapons.slice(start, end);
+  
+  renderItems(pageItems);
+  currentPage++;
+}
+
+function renderItems(items) {
+  // 使用虚拟滚动技术只渲染可见区域
+}
+
+// 新增防御装备合成逻辑
+function combineDefenses() {
+	const counts = {};
+	gameData.defenses.forEach(d => counts[d.level] = (counts[d.level] || 0) + 1);
+	
+	Object.keys(counts).sort((a,b) => a - b).forEach(lvl => {
+		let count = Math.floor(counts[lvl] / 3);
+		while(count-- > 0) {
+			let removed = 0;
+			gameData.defenses = gameData.defenses.filter(d => {
+				if(d.level == lvl && removed < 3) {
+					removed++;
+					return false;
+				}
+				return true;
+			});
+			const newLevel = parseInt(lvl)+1;
+			gameData.defenses.push({
+				level: newLevel,
+				defense: 100 * Math.pow(2, newLevel-1),
+				color: getColor(newLevel)
+			});
+		}
+	});
+	updateDisplay();
+	saveGame();
+}
+
+let gameData = {
+	username: '',
+	playerName: '',
+	hp: 100,		 // 当前血量
+	maxHp: 100,	   // 最大血量（由防御装备决定）
+	diamond: 0,	   // 钻石数量
+	level: 1,		 // 玩家等级
+	exp: 0,		   // 当前经验
+	needExp: 100,	 // 升级所需经验
+	currentStage: 1,  // 当前关卡
+	bossCount: 0,	 // 当前关卡击败BOSS数量
+	weapons: [],	  // 武器列表
+	defenses: [],	 // 防御装备列表
+	currentWeapon: null,  // 当前装备的武器
+	currentDefense: null,  // 当前装备的防具
+	bossKills: {},	// 新增：BOSS击杀记录
+	claimedQuests: {} // 新增：已领取任务
+};
+
+// ================= 战斗系统变量 =================
+let bossHealth = 0;			// BOSS当前血量
+let autoFightInterval = null;  // 自动战斗计时器
+const bossEmojis = ['🤪Werid Face','👿Demon','🤡Joker','👻Gost','👹Oni','👺Tengu','🤖Robot','💀Skull','☠️King Skull','👽Alien ','🎃Pumpkin ','🥷🏻Ninja','🧟‍♀️Zombie','👁️Cyclops','🎅Santa','🧞‍♂️Genie','🧜‍♀️Mermaid','👼Angel','🪼Jellyfish','🐙Octopus','🧌Troll','💩Pile of Poo','🪰Fly','🫑Pepper','🥑Avocado ','🫀Heart','🧠Brain','🧛‍♀️Vampire','🦖T-rex','🐲Dragon','🐉Draon King']; // BOSS表情集合
+
+// ================= 用户系统 =================
+function register() {
+	const username = document.getElementById('username').value;
+	const password = document.getElementById('password').value;
+	const playerName = document.getElementById('playerName').value;
+	
+	if(!username || !password || !playerName) return alert('请填写完整信息');
+	
+	const users = JSON.parse(localStorage.getItem('users') || '{}');
+	if(users[username]) return alert('账号已存在');
+	
+	users[username] = { password, playerName };
+	localStorage.setItem('users', JSON.stringify(users));
+	
+	// 初始化所有数据
+	gameData = {
+		username,
+		playerName,
+		hp: 100,
+		maxHp: 100,
+		diamond: 0,
+		level: 1,
+		exp: 0,
+		needExp: 100,
+		currentStage: 1,
+		bossCount: 0,
+		weapons: [createWeapon(1)],
+		defenses: [createDefense(1)],
+		currentWeapon: null,
+		currentDefense: null,
+		bossKills: {},
+		claimedQuests: {}
+	};
+	gameData.currentWeapon = gameData.weapons[0];
+	gameData.currentDefense = gameData.defenses[0];
+	gameData.hp = gameData.maxHp = gameData.defenses[0].defense;
+	
+	alert('注册成功，请登录');
+}
+
+function login() {
+	const username = document.getElementById('username').value;
+	const password = document.getElementById('password').value;
+	const users = JSON.parse(localStorage.getItem('users') || '{}');
+	
+	if(!users[username] || users[username].password !== password) {
+		return alert('账号或密码错误');
+	}
+	
+	const savedData = localStorage.getItem(`gameData_${username}`);
+	if(savedData) {
+		const loadedData = JSON.parse(savedData);
+		Object.assign(gameData, loadedData);
+		// 兼容旧存档
+		if(!gameData.bossKills) gameData.bossKills = {};
+		if(!gameData.claimedQuests) gameData.claimedQuests = {};
+		gameData.playerName = users[username].playerName;
+		gameData.username = username;
+		updateMaxHp();
+	} else {
+		gameData.playerName = users[username].playerName;
+		gameData.username = username;
+		gameData.weapons = [createWeapon(1)];
+		gameData.defenses = [createDefense(1)];
+		gameData.currentWeapon = gameData.weapons[0];
+		gameData.currentDefense = gameData.defenses[0];
+		gameData.hp = gameData.maxHp = gameData.defenses[0].defense;
+		gameData.bossKills = {};
+		gameData.claimedQuests = {};
+	}
+	
+	document.getElementById('loginBox').classList.add('hidden');
+	document.getElementById('gameUI').classList.remove('hidden');
+	initializeBoss();
+	updateDisplay();
+}
+// ================= 装备系统 =================
+// 新增：武器抽卡
+// 修改后的抽奖概率逻辑
+// 修改后的概率分布配置
+const probabilityConfig = [
+  { level: 1, chance: 50.00 },   // 50%
+  { level: 2, chance: 30.00 },   // 30%
+  { level: 3, chance: 12.00 },   // 12%
+  { level: 4, chance: 5.00 },	// 5%
+  { level: 5, chance: 1.90 },	// 1.9%
+  { level: 6, chance: 0.50 },	// 0.5%
+  { level: 7, chance: 0.30 },	// 0.3%
+  { level: 8, chance: 0.20 },	// 0.2%
+  { level: 9, chance: 0.08 },	// 0.08%
+  { level: 10, chance: 0.01 },   // 0.01%
+  { level: 11, maxLevel: 15, chance: 0.005 },  // 11-15级 每组0.005%
+  { level: 16, maxLevel: 20, chance: 0.002 },  // 16-20级 每组0.002%
+  { level: 21, maxLevel: 25, chance: 0.0012 },  // 21-25级 每组0.0012%
+  { level: 26, maxLevel: 30, chance: 0.0005 }, // 26-30级 每组0.0005%
+  { level: 31, maxLevel: 35, chance: 0.00015 },// 31-35级 每组0.00015%
+  { level: 36, maxLevel: 40, chance: 0.00009 },// 36-40级 每组0.00009%
+  { level: 41, maxLevel: 45, chance: 0.00005 },// 41-45级 每组0.00005%
+  { level: 46, maxLevel: 50, chance: 0.00001 } // 46-50级 每组0.00001%
+];
+
+// 修改后的抽奖逻辑
+function getRandomLevel() {
+  const rand = Math.random() * 100;
+  let accumulated = 0;
+
+  for (const config of probabilityConfig) {
+	let chance = config.chance;
+	let levels = 1;
+	
+	if (config.maxLevel) {
+	  levels = config.maxLevel - config.level + 1;
+	  chance = config.chance * levels;
+	}
+
+	if (rand <= accumulated + chance) {
+	  if (config.maxLevel) {
+		return Math.floor(config.level + Math.random() * levels);
+	  }
+	  return config.level;
+	}
+	accumulated += chance;
+  }
+  return 1; // 保底返回1级
+}
+
+// 修改后的武器抽卡函数
+function drawWeapon(times) {
+	let cost;
+	if(times === 1) cost = 200;
+	else if(times === 10) cost = 2000;
+	else if(times === 100) cost = 20000;
+	else if(times === 1000) cost = 200000;
+	else return alert('无效次数');
+	
+	if(gameData.diamond < cost) return alert('💎钻石不足！');
+	
+	gameData.diamond -= cost;
+	const results = [];
+	
+	for(let i=0; i<times; i++){
+		const level = getRandomLevel();
+		results.push(level);
+		gameData.weapons.push(createWeapon(level));
+	}
+	
+	// 统计结果
+	const countMap = results.reduce((acc, lv) => {
+		acc[lv] = (acc[lv] || 0) + 1;
+		return acc;
+	}, {});
+	
+	// 生成结果信息
+	let resultText = `获得装备（${times}件）：`;
+	Object.keys(countMap).sort((a,b) => b-a).forEach(lv => {
+		resultText += `\nLv${lv} x${countMap[lv]}`;
+	});
+	
+	showMessage(resultText);
+	saveGame();
+	updateDisplay();
+}
+
+// 修改后的drawDefense函数
+function drawDefense(times) {
+	let cost;
+	if(times === 1) cost = 150;
+	else if(times === 10) cost = 1500;
+	else if(times === 100) cost = 15000;
+	else if(times === 1000) cost = 150000;
+	else return alert('无效次数');
+	
+	if(gameData.diamond < cost) return alert('💎钻石不足！');
+	
+	gameData.diamond -= cost;
+	const results = [];
+	
+	for(let i=0; i<times; i++){
+		const level = getRandomLevel();
+		results.push(level);
+		gameData.defenses.push(createDefense(level));
+	}
+	
+	// 统计结果
+	const countMap = results.reduce((acc, lv) => {
+		acc[lv] = (acc[lv] || 0) + 1;
+		return acc;
+	}, {});
+	
+	// 生成结果信息
+	let resultText = `获得装备（${times}件）：`;
+	Object.keys(countMap).sort((a,b) => b-a).forEach(lv => {
+		resultText += `\nLv${lv} x${countMap[lv]}`;
+	});
+	
+	showMessage(resultText);
+	saveGame();
+	updateDisplay();
+}
+
+let pendingEquip = null; // 待更换的装备信息
+
+// 修改后的装备穿戴功能
+function equipItem(level, type) {
+	const items = type === 'weapon' ? gameData.weapons : gameData.defenses;
+	const item = items.find(i => i.level === level);
+	
+	if(!item) return;
+	if(type === 'weapon') {
+		// 武器显示确认框
+		const currentAttack = gameData.currentWeapon?.attack || 0;
+		document.getElementById('confirmText').innerHTML = `
+			<div style="color:#666">当前攻击：${currentAttack}</div>
+			<div style="color:#2196F3">更换后攻击：${item.attack}</div>
+			<div style="margin-top:8px;color:#ff5722">*更换将立即生效</div>
+		`;
+		document.getElementById('confirmBox').classList.remove('hidden');
+		pendingEquip = { item, type: 'weapon' };
+	} else {
+		// 防御装备显示确认
+		const currentHp = gameData.hp;
+		const newMaxHp = item.defense;
+		const newHp = Math.min(currentHp, newMaxHp); // 确保不超过上限
+
+document.getElementById('confirmText').innerHTML = `
+			<div style="color:#666">当前血量：${currentHp}/${gameData.maxHp}</div>
+			<div style="color:#2196F3">更换后血量：${newHp}/${newMaxHp}</div>
+			<div style="margin-top:8px;color:#ff5722">*更换后当前血量保持不变</div>
+		`;
+		document.getElementById('confirmBox').classList.remove('hidden');
+		pendingEquip = { item, newHp, newMaxHp };
+	}
+}
+
+// 确认/取消装备
+function confirmEquip(isConfirm) {
+	document.getElementById('confirmBox').classList.add('hidden');
+	
+	if(isConfirm && pendingEquip) {
+		if(pendingEquip.type === 'weapon') {
+			gameData.currentWeapon = pendingEquip.item;
+		} else {
+			gameData.currentDefense = pendingEquip.item;
+			gameData.maxHp = pendingEquip.newMaxHp;
+			gameData.hp = pendingEquip.newHp;
+		}
+		updateDisplay();
+		saveGame();
+	}
+	pendingEquip = null;
+}
+
+
+// ================= 战斗系统 =================
+function initializeBoss() {
+	const bossLevel = Math.ceil(gameData.currentStage / 10);
+	bossHealth = 100 * Math.pow(2, bossLevel-1);
+}
+
+function attackBoss() {
+  if(!gameData.currentWeapon) return alert('请先装备武器！');
+  
+  const bossLevel = Math.ceil(gameData.currentStage / 10);
+  const bossAttack = 5 * Math.pow(2, bossLevel-1);
+  const playerAttack = gameData.currentWeapon.attack;
+
+  // 创建伤害数字
+  const damageNumber = document.createElement('div');
+  damageNumber.className = 'damage-number';
+  damageNumber.textContent = `-${formatNumber(playerAttack)}🩸`;
+  damageNumber.style.left = `${Math.random() * 50 + 25}%`;
+  document.querySelector('.boss-info').appendChild(damageNumber);
+
+  // 添加血条抖动效果
+  const bossBar = document.getElementById('bossBar');
+  bossBar.classList.add('shake');
+  setTimeout(() => bossBar.classList.remove('shake'), 300);
+
+  // 战斗计算
+  let tempBossHp = bossHealth - playerAttack;
+  let tempPlayerHp = gameData.hp;
+  
+  if(tempBossHp > 0) {
+	tempPlayerHp = Math.max(tempPlayerHp - bossAttack, 0);
+	// 显示玩家受到的伤害
+	showMessage(`💔 受到 ${formatNumber(bossAttack)} 点伤害！`);
+  }
+
+  // 更新血条动画
+  const bossHealthBar = document.getElementById('bossHealth');
+  bossHealthBar.style.transition = 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+  
+  // 更新状态
+  bossHealth = Math.max(tempBossHp, 0);
+  gameData.hp = tempPlayerHp;
+
+  // 立即更新血条宽度以触发动画
+  const maxBossHp = 100 * Math.pow(2, bossLevel-1);
+  const newWidth = (Math.max(bossHealth,0)/maxBossHp*100);
+  bossHealthBar.style.width = `${newWidth}%`;
+
+  // 其他逻辑保持不变...
+  if(bossHealth <= 0) {
+	const rewardBase = 50 * Math.pow(2, bossLevel-1);
+	gameData.exp += rewardBase;
+	gameData.diamond += bossLevel*10;
+	gameData.bossCount++;
+	
+	// 显示击败特效
+	const bossEmoji = document.getElementById('bossEmoji');
+	bossEmoji.style.transform = 'scale(2)';
+	bossEmoji.style.transition = 'transform 1s';
+	setTimeout(() => bossEmoji.style.transform = 'scale(1)', 300);
+
+if(Math.random() < 0.3) { // 30%掉落几率
+	const bossLevel = Math.ceil(gameData.currentStage / 10);
+	const isWeapon = Math.random() < 0.5; // 50%几率武器或防御
+	
+	const dropNotice = document.createElement('div');
+	dropNotice.className = 'drop-notice';
+	dropNotice.innerHTML = isWeapon ? 
+	  `🗡️ 获得 Lv${bossLevel} 武器!` : 
+	  `🛡️ 获得 Lv${bossLevel} 防御装备!`;
+	
+	if(isWeapon) {
+	  gameData.weapons.push(createWeapon(bossLevel));
+	  dropNotice.style.color = "#2196F3"; // 蓝色武器提示
+	} else {
+	  gameData.defenses.push(createDefense(bossLevel));
+	  dropNotice.style.color = "#4CAF50"; // 绿色防御提示
+	}
+	
+	document.body.appendChild(dropNotice);
+	setTimeout(() => dropNotice.remove(), 3000);
+  }
+	
+	// 更新任务系统
+	gameData.bossKills[bossLevel] = (gameData.bossKills[bossLevel] || 0) + 1;
+	processQuestRewards(bossLevel);
+	
+	if(gameData.bossCount >= 10) {
+	  gameData.currentStage++;
+	  gameData.bossCount = 0;
+	}
+	initializeBoss();
+  }
+
+  checkLevelUp();
+  checkPlayerSurvival();
+  saveGame();
+  updateDisplay();
+}
+
+// ================= 任务系统 =================
+function processQuestRewards(bossLevel) {
+	const totalKills = gameData.bossKills[bossLevel];
+	const claimed = gameData.claimedQuests[bossLevel] || 0;
+	const availableClaims = Math.floor(totalKills / 10) - claimed;
+	
+	if(availableClaims > 0) {
+		const baseReward = 1000 * Math.pow(2, bossLevel - 1);
+		const expReward = baseReward * availableClaims;
+		const diamondReward = baseReward * availableClaims;
+		
+		gameData.exp += expReward;
+		gameData.diamond += diamondReward;
+		gameData.claimedQuests[bossLevel] = (claimed + availableClaims);
+		
+		showMessage(`🎉 领取 Lv${bossLevel} BOSS奖励 x${availableClaims}次\n获得 ${expReward}📈经验 + ${diamondReward}💎砖石`);
+	}
+}
+
+function updateQuestDisplay() {
+	const container = document.getElementById('questList');
+	container.innerHTML = '';
+	
+	const bossLevels = Object.keys(gameData.bossKills)
+		.map(Number)
+		.sort((a,b) => a - b);
+
+	if(bossLevels.length === 0) {
+		container.innerHTML = `<div style="text-align:center;color:#999">🤺击败任意BOSS解锁首个任务</div>`;
+		return;
+	}
+
+	bossLevels.forEach(level => {
+		const totalKills = gameData.bossKills[level];
+		const claimed = gameData.claimedQuests[level] || 0;
+		const progress = totalKills % 10;
+		const progressPercent = (progress / 10) * 100;
+		const nextReward = 1000 * Math.pow(2, level - 1);
+
+		const questItem = document.createElement('div');
+		questItem.className = 'quest-item';
+		questItem.innerHTML = `
+			<div class="quest-header">
+				<span class="quest-level">Lv${level} BOSS</span>
+				<span>累计击杀：${totalKills}</span>
+			</div>
+			<div class="progress-container">
+				<div class="progress-bar" style="width: ${progressPercent}%"></div>
+			</div>
+			<div class="quest-header">
+				<span>进度：${progress}/10</span>
+				<span class="quest-reward">已领取 x${claimed}</span>
+			</div>
+			<div style="margin-top:5px; font-size:0.9em">
+				'下次奖励：${formatNumber(nextReward)}📈经验 + ${formatNumber(nextReward)}💎砖石'
+			</div>
+		`;
+		container.appendChild(questItem);
+	});
+}
+
+// ================= 合成系统 =================
+function combineEquipment() {
+	const activeTab = document.querySelector('.backpack .active-tab').textContent;
+	if(activeTab === '武器背包') {
+		combineWeapons();
+	} else {
+		combineDefenses();
+	}
+	
+	let isCombining = false;
+
+  if (isCombining) return;
+  isCombining = true;
+  // ...执行合成...
+  isCombining = false;
+showMessage("🎉 合成完成！");
+}
+function combineWeapons() {
+  const levelMap = new Map();
+  
+  // 阶段1：统计等级分布（单次遍历）
+  gameData.weapons.forEach(weapon => {
+	levelMap.set(weapon.level, (levelMap.get(weapon.level) || 0) + 1);
+  });
+
+  // 阶段2：批量处理合成
+  const newWeapons = [];
+  const levels = [...levelMap.keys()].sort((a, b) => a - b);
+
+  levels.forEach(level => {
+	let count = levelMap.get(level);
+	const canCombine = Math.floor(count / 3);
+	
+	if (canCombine > 0) {
+	  // 保留余数装备
+	  const remaining = count % 3;
+	  newWeapons.push(...Array(remaining).fill(level));
+	  
+	  // 添加合成后的装备
+	  newWeapons.push(...Array(canCombine).fill(level + 1));
+	} else {
+	  newWeapons.push(...Array(count).fill(level));
+	}
+  });
+
+  // 阶段3：批量更新数据
+  gameData.weapons = newWeapons.map(lv => createWeapon(lv));
+
+	updateDisplay();
+	saveGame();
+}
+
+function combineDefenses() {
+const currentHp = gameData.hp; // 保存当前血量
+	const counts = {};
+	gameData.defenses.forEach(d => counts[d.level] = (counts[d.level] || 0) + 1);
+	
+	Object.keys(counts).sort((a,b) => a - b).forEach(lvl => {
+		let count = Math.floor(counts[lvl] / 3);
+		while(count-- > 0) {
+			let removed = 0;
+			gameData.defenses = gameData.defenses.filter(d => {
+				if(d.level == lvl && removed < 3) {
+					removed++;
+					return false;
+				}
+				return true;
+			});
+			gameData.defenses.push(createDefense(parseInt(lvl)+1));
+		}
+	});
+	gameData.hp = Math.min(currentHp, gameData.maxHp);
+	updateDisplay();
+	saveGame();
+}
+
+// ================= 辅助函数 =================
+function createWeapon(level) {
+	return {
+		level: level,
+		attack: 5 * Math.pow(2, level-1),
+		color: getColor(level)
+	};
+}
+
+function createDefense(level) {
+	return {
+		level: level,
+		defense: 100 * Math.pow(2, level-1), // 防御值即最大血量
+		color: getColor(level)
+	};
+}
+
+// 修改后的颜色分配函数
+function getColor(level) {
+	if (level <= 5) return 'white';
+	else if (level <= 10) return 'green';
+	else if (level <= 15) return 'blue';
+	else if (level <= 20) return 'yellow';
+	else if (level <= 30) return 'purple';
+	else if (level <= 40) return 'orange';
+	else if (level <= 50) return 'red';
+	else if (level <= 70) return 'pink';
+	else return 'rainbow'; // 71级以上
+}
+function updateMaxHp() {
+	gameData.maxHp = gameData.currentDefense ? 
+		gameData.currentDefense.defense : 0;
+	gameData.hp = Math.min(gameData.hp, gameData.maxHp);
+}
+
+// ================= 显示系统 =================
+function updateDisplay() {
+	// 玩家状态
+	document.getElementById('showName').textContent = gameData.playerName;
+	document.getElementById('hp').textContent = formatNumber(gameData.hp);
+	document.getElementById('maxHp').textContent = formatNumber(gameData.maxHp);
+	document.getElementById('diamond').textContent = formatNumber(gameData.diamond);
+	document.getElementById('level').textContent = gameData.level;
+	document.getElementById('exp').textContent = 
+	`${formatNumber(gameData.exp)}/${formatNumber(gameData.needExp)}`;
+	document.getElementById('stage').textContent = `${gameData.currentStage}-${gameData.bossCount+1}`;
+	document.getElementById('currentWeapon').textContent = 
+	gameData.currentWeapon ? `Lv.${gameData.currentWeapon.level} (${formatNumber(gameData.currentWeapon.attack)}攻)` : '无';	document.getElementById('currentDefense').textContent = 
+	gameData.currentDefense ? `Lv.${gameData.currentDefense.level} (${formatNumber(gameData.currentDefense.defense)}血)` : '无';
+
+	// BOSS状态
+	const bossLevel = Math.ceil(gameData.currentStage / 10);
+	const maxBossHp = 100 * Math.pow(2, bossLevel-1);
+
+const bossAttack = 5 * Math.pow(2, bossLevel-1); // 计算BOSS攻击力
+
+	document.getElementById('bossEmoji').textContent = 
+		bossEmojis[Math.min(bossLevel-1, bossEmojis.length-1)] || '👾';
+	document.getElementById('bossLevel').textContent = bossLevel;
+	document.getElementById('bossHp').textContent = 
+	`❤️${formatNumber(Math.max(bossHealth,0))}/${formatNumber(maxBossHp)}`;
+
+document.getElementById('bossAttack').textContent = formatNumber(bossAttack);
+	document.getElementById('bossReward').textContent = 
+	`📈${formatNumber(50 * Math.pow(2, bossLevel-1))}经验 + 💎${formatNumber(10 * bossLevel)}钻石`;
+	document.getElementById('bossHealth').style.width = 
+		`${(Math.max(bossHealth,0)/maxBossHp*100)}%`;
+
+updateQuestDisplay(); // 新增任务显示
+
+  const nextReward = 100 * Math.pow(2, gameData.level - 1);
+  document.getElementById('nextReward').textContent = formatNumber(nextReward);
+
+	// 装备列表
+	const activeTab = document.querySelector('.backpack .active-tab').textContent;
+	const type = activeTab.includes("武器") ? 'weapon' : 'defense';
+	const items = type === 'weapon' ? gameData.weapons : gameData.defenses;
+	
+	const container = document.getElementById('equipmentList');
+	container.innerHTML = '';
+	
+	const counts = items.reduce((acc, item) => {
+		acc[item.level] = (acc[item.level] || 0) + 1;
+		return acc;
+	}, {});
+
+	Object.keys(counts).sort((a,b) => a - b).forEach(level => {
+		const item = items.find(i => i.level == level);
+		const div = document.createElement('div');
+		div.className = `equipment-item ${item.color} ${
+			(type === 'weapon' && gameData.currentWeapon?.level == level) ||
+			(type === 'defense' && gameData.currentDefense?.level == level) ? 'equipped' : ''
+		}`;
+
+		div.innerHTML = `
+			<div style="flex-grow:1">
+				<div>Lv.${level} ${type === 'weapon' ? '武器' : '防御'}</div>
+				<div style="font-size:12px;color:#666">
+					${type === 'weapon' ? 
+						`攻击力: ${formatNumber(5 * Math.pow(2, level-1))}`:
+`最大血量: ${formatNumber(100 * Math.pow(2, level-1))}`}
+				</div>
+			</div>
+			<div style="display:flex;align-items:center;gap:10px">
+				<span style="font-weight:bold">×${counts[level]}</span>
+				<button onclick="equipItem(${level}, '${type}')" 
+					style="background:#2196F3; padding:6px 12px; border-radius:4px; border:none; color:white">
+					装备
+				</button>
+			</div>
+		`;
+		container.appendChild(div);
+	});
+
+	// 自动战斗按钮状态
+	const autoBtn = document.getElementById('autoBtn');
+	if(autoFightInterval) {
+		autoBtn.textContent = '🛑停止自动';
+		autoBtn.classList.add('auto-fighting');
+	} else {
+		autoBtn.textContent = '⚡自动战斗';
+		autoBtn.classList.remove('auto-fighting');
+	}
+}
+
+function toggleAutoCombine() {
+	const btn = document.getElementById('autoCombineBtn');
+	if (autoCombineInterval) {
+		clearInterval(autoCombineInterval);
+		autoCombineInterval = null;
+		btn.style.background = '#607D8B';
+		btn.innerHTML = '🤖自动合成';
+		showMessage("自动合成已停止");
+	} else {
+		autoCombineInterval = setInterval(autoCombine, 500); // 每0.5秒执行一次
+		btn.style.background = '#795548';
+		btn.innerHTML = '🛑停止自动';
+		showMessage("自动合成已启动（每0.5秒检测）");
+	}
+}
+
+// 自动合成逻辑
+function autoCombine() {
+	if (isCombining) return;
+	isCombining = true;
+	
+	// 记录原始数量用于检测变化
+	const preWeaponCount = gameData.weapons.length;
+	const preDefenseCount = gameData.defenses.length;
+	
+	// 执行合成
+	combineWeapons();
+	combineDefenses();
+	
+	// 检测是否有变化
+	if (gameData.weapons.length !== preWeaponCount || 
+		gameData.defenses.length !== preDefenseCount) {
+		showMessage("🤖自动合成完成！");
+	}
+	
+	isCombining = false;
+}
+
+// ================= 其他系统 =================
+
+
+function showMessage(text) {
+	  const box = document.getElementById("messageBox");
+	  box.textContent = text;
+	  box.style.display = "block";
+	  setTimeout(() => box.style.display = "none", 5000);
+	}
+
+
+function checkLevelUp() {
+	while (gameData.exp >= gameData.needExp) {
+		const overflowExp = gameData.exp - gameData.needExp;
+		const currentLevel = gameData.level; // 记录升级前等级
+		
+		gameData.level++; // 等级提升
+		gameData.exp = overflowExp; // 保留溢出经验
+		
+		// 钻石奖励 = 100 * 2^(新等级-2)（指数级增长）
+		const diamondReward = 100 * Math.pow(2, currentLevel - 1);
+		gameData.diamond += diamondReward;
+		
+		showMessage(`升级到 ${gameData.level} 级！获得 ${diamondReward}💎`);
+		
+		// 设置下一级所需经验（翻倍）
+		gameData.needExp *= 2; 
+		
+		// 每次升级回满血
+		gameData.hp = gameData.maxHp;
+	}
+}
+
+function checkPlayerSurvival() {
+	if (gameData.hp <= 0) {
+		// 重置到关卡1-BOSS1
+		gameData.currentStage = 1;	// 强制回到第1关
+		gameData.bossCount = 0;	   // 重置BOSS进度
+		// 保留钻石、等级和经验
+		gameData.hp = gameData.maxHp = gameData.currentDefense.defense; // 回满防御装备提供的血量
+		initializeBoss();			 // 重新初始化BOSS
+		alert('战败！关卡将重置到1-1重新开始！');
+		updateDisplay();
+		saveGame();
+	}
+}
+
+function toggleAutoFight() {
+	const btn = document.getElementById('autoBtn');
+	if (autoFightInterval) {
+		clearInterval(autoFightInterval);
+		autoFightInterval = null;
+	} else {
+		autoFightInterval = setInterval(() => {
+			if (bossHealth > 0 && gameData.hp > 0) {
+				attackBoss();
+			} else {
+				clearInterval(autoFightInterval);
+				autoFightInterval = null;
+			}
+		}, 1000);
+	}
+	updateDisplay();
+}
+
+
+function saveGame() {
+	const saveData = {
+		username: gameData.username,
+		playerName: gameData.playerName,
+		hp: gameData.hp,
+		maxHp: gameData.maxHp,
+		diamond: gameData.diamond,
+		level: gameData.level,
+		exp: gameData.exp,
+		needExp: gameData.needExp,
+		currentStage: gameData.currentStage,
+		bossCount: gameData.bossCount,
+		weapons: gameData.weapons,
+		defenses: gameData.defenses,
+		currentWeapon: gameData.currentWeapon,
+		currentDefense: gameData.currentDefense,
+		bossKills: gameData.bossKills,
+		claimedQuests: gameData.claimedQuests
+	};
+	localStorage.setItem(`gameData_${gameData.username}`, JSON.stringify(saveData));
+}
+
+// ================= 初始化游戏 =================
+function initializeGame() {
+	const savedUsers = localStorage.getItem('users');
+	if(!savedUsers) {
+		document.getElementById('loginBox').classList.remove('hidden');
+	} else {
+		document.getElementById('gameUI').classList.remove('hidden');
+		initializeBoss();
+		updateDisplay();
+	}
+}
+
+// 启动游戏
+initializeGame();
+</script>
+</body>
+</html>
